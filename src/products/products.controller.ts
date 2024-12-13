@@ -1,48 +1,66 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';
-import { UpdateProductDto } from './dto/update-product.dto';
-import { iproducts } from './iproducts.interface';
-import { User, Category, Review } from '@prisma/client';
-import { UpdateUserDto } from 'src/users/dto/update-user.dto';
+import { IProduct } from './iproducts.interface';
+import { Category } from '@prisma/client';
 import { Product } from './entities/product.entity';
+import { UpdateUserDto } from 'src/users/dto/update-user.dto';
+import { FindDto } from './dto/find-product.dto';
+import { ApiTags } from '@nestjs/swagger';
+import { UpdateProductDto } from './dto/update-product.dto';
 
-@Controller('products')
-export class ProductsController implements iproducts {
-  constructor(private readonly productsService: ProductsService) {}
-  createProduct(data: CreateProductDto): Promise<Product> {
-    throw new Error('Method not implemented.');
+@Controller('product')
+@ApiTags('product')
+
+export class ProductsController implements IProduct {
+  constructor(private readonly product: ProductsService) {}
+
+  @Post('')
+  CreateProduct(@Body()data: CreateProductDto): Promise<Product> {
+    return this.product.CreateProduct(data)
   }
-  findProductById(id: string): Promise<Product> {
-    throw new Error('Method not implemented.');
+  GetProducts(data: FindDto): Promise<Product[]> {
+    return this.product.GetProducts(data)
   }
-  findProductName(name: string): Promise<Product> {
-    throw new Error('Method not implemented.');
+  GetCategory(data: FindDto): Promise<Category[]> {
+    return this.product.GetCategory(data)
+    
   }
-  findProductByPrice(price: string): Promise<Product> {
-    throw new Error('Method not implemented.');
+  FindProductById(data: FindDto): Promise<Product> {
+    return this.product.FindProductById(data)
+
   }
-  findProductByvendor(vendorId: string): Promise<Array<User>> {
-    throw new Error('Method not implemented.');
+  FindProductByName(data: FindDto): Promise<Product> {
+    return this.product.FindProductByName(data)
+
   }
-  findProductCategory(categoryId: string): Promise<Array<Category>> {
-    throw new Error('Method not implemented.');
+  FindProductByPrice(data: FindDto): Promise<Product> {
+    return this.product.FindProductByPrice(data)
+
+
   }
-  findProductReviews(productId: string): Promise<Array<Review>> {
-    throw new Error('Method not implemented.');
+  FindProductByVendorId(data: FindDto): Promise<Product> {
+    return this.product.FindProductByVendorId(data)
+
   }
-  updateProductById(id: string, data: UpdateUserDto): Promise<Product> {
-    throw new Error('Method not implemented.');
+  FindProductCategoryId(data: FindDto): Promise<Product> {
+    return this.product.FindProductCategoryId(data)
+
   }
-  updateProductName(id: string, name: string): Promise<Product> {
-    throw new Error('Method not implemented.');
+  FindProductReviews(data: FindDto): Promise<Product[]> {
+    return this.product.FindProductReviews(data)
+
   }
-  updateProductPrice(id: string, price: string): Promise<Product> {
-    throw new Error('Method not implemented.');
+  UpdateProductProperty(data: UpdateProductDto): Promise<Product> {
+    return this.product.UpdateProductProperty(data)
+
   }
-  removeProductById(id: string): Promise<Product> {
-    throw new Error('Method not implemented.');
+ 
+  RemoveProductById(data: string): Promise<Product> {
+    return this.product.RemoveProductById(data)
+
   }
+ 
 
  
 }

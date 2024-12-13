@@ -1,24 +1,25 @@
 import { Category, Review, User } from "@prisma/client";
 import { Product } from "./entities/product.entity";
-import { UpdateUserDto } from "src/users/dto/update-user.dto";
 import { CreateProductDto } from "./dto/create-product.dto";
+import { FindDto } from "./dto/find-product.dto";
+import { UpdateProductDto } from "./dto/update-product.dto";
 
  
-export interface iproducts {
-    createProduct(data: CreateProductDto): Promise<Product>;
+export interface IProduct {
+    CreateProduct(data: CreateProductDto): Promise<Product>;
+    GetProducts(data:FindDto): Promise<Product[]>
+    GetCategory(data:FindDto): Promise<Category[]>
+    FindProductById(data: FindDto): Promise<Product>;
+    FindProductByName(data: FindDto): Promise<Product>;
+    FindProductByPrice(data: FindDto): Promise<Product>;
   
-    findProductById(id: string): Promise<Product>;
-    findProductName(name: string): Promise<Product>;
-    findProductByPrice(price: string): Promise<Product>;
+    FindProductByVendorId(data: FindDto): Promise<Product>;
+    FindProductCategoryId(data: FindDto): Promise<Product>;
+    FindProductReviews(data: FindDto): Promise<Product[]>;
   
-    findProductByvendor(vendorId: string): Promise<Array<User>>;
-    findProductCategory(categoryId: string): Promise<Array<Category>>;
-    findProductReviews(productId: string): Promise<Array<Review>>;
+    UpdateProductProperty( data: UpdateProductDto): Promise<Product>;
+    
   
-    updateProductById(id: string, data: UpdateUserDto): Promise<Product>;
-    updateProductName(id: string, name: string): Promise<Product>;
-    updateProductPrice(id: string, price: string): Promise<Product>;
-  
-    removeProductById(id: string): Promise<Product>;
+    RemoveProductById(data:string): Promise<Product>;
   }
   

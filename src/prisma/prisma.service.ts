@@ -7,6 +7,9 @@ export class PrismaService
   extends PrismaClient
   implements OnModuleInit, OnModuleDestroy
 {
+  create(arg0: { data: {}; }) {
+    throw new Error('Method not implemented.');
+  }
   async onModuleInit() {
     await this.$connect;
   }

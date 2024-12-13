@@ -13,8 +13,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
-
 // Define Enums for User Roles, Order Status, and Payment Status
 enum Role {
   CUSTOMER
@@ -38,20 +36,20 @@ enum PaymentStatus {
 // Models for your e-commerce application
 
 model User {
-  id        Int      @id @default(autoincrement())
+  id        String   @id @default(cuid()) @map("_id")
   firstName String
   lastName  String
   email     String   @unique
   password  String
   phone     String
-  role      Role     // Using Enum here for Role
+  role      Role     @default(CUSTOMER) // Using Enum here for Role
   isActive  Boolean  @default(true)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  
-  orders    Order[]
-  reviews   Review[]
-  addresses Address[]
+  addresses Json     @default("{}")
+
+  orders  Order[]
+  reviews Review[]
 
   Product Product[]
 
@@ -60,123 +58,97 @@ model User {
 
 // Profile model for storing additional user information
 model Profile {
-  id        Int       @id @default(autoincrement())
-  bio       String?
-  avatar    String?   // URL of the profile picture
-  website   String?
-  social    Json?     // JSON object for social media links
-  user      User      @relation(fields: [userId], references: [id])
-  userId    Int       @unique
+  id      String  @id @default(cuid()) @map("_id")
+  bio     String?
+  avatar  String? // URL of the profile picture
+  website String?
+  social  Json? // JSON object for social media links
+  user    User    @relation(fields: [userId], references: [id])
+  userId  String
 }
 
 model Product {
-  id          Int       @id @default(autoincrement())
+  id          String   @id @default(cuid()) @map("_id")
   name        String
-  description String
-  price       Float
-  stock       Int
-  images      Image[]
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  description String?
+  price       String
+  images      String[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
-  vendorId    Int
-  vendor      User      @relation(fields: [vendorId], references: [id])
+  vendorId String?
+  vendor   User?   @relation(fields: [vendorId], references: [id])
 
-  categoryId  Int
-  category    Category  @relation(fields: [categoryId], references: [id])
+  categoryId String?
+  category   Category? @relation(fields: [categoryId], references: [id])
 
-  reviews     Review[]
-  orderItems  OrderItem[]
+  reviews    Review[]
+  orderItems OrderItem[]
 }
 
 model Category {
-  id          Int       @id @default(autoincrement())
-  name        String
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  id String @id @default(cuid()) @map("_id")
 
-  products    Product[]
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  products Product[]
 }
 
 model Order {
-  id           Int          @id @default(autoincrement())
-  orderStatus  OrderStatus // Using Enum here for OrderStatus
+  id            String        @id @default(cuid()) @map("_id")
+  orderStatus   OrderStatus // Using Enum here for OrderStatus
   paymentStatus PaymentStatus // Using Enum here for PaymentStatus
-  totalAmount  Float
-  shippingAddr String
-  billingAddr  String
-  createdAt    DateTime     @default(now())
-  updatedAt    DateTime     @updatedAt
+  totalAmount   Float
+  shippingAddr  String
+  billingAddr   String
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
 
-  userId       Int
-  user         User         @relation(fields: [userId], references: [id])
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
 
-  orderItems   OrderItem[]
-  payments     Payment[]
+  orderItems OrderItem[]
+  payments   Payment[]
 }
 
 model OrderItem {
-  id        Int       @id @default(autoincrement())
-  quantity  Int
-  price     Float
+  id         String @id @default(cuid()) @map("_id")
+  quantity   Int
+  price      Float
   totalPrice Float
-  
-  orderId   Int
-  order     Order     @relation(fields: [orderId], references: [id])
 
-  productId Int
-  product   Product   @relation(fields: [productId], references: [id])
+  orderId String
+  order   Order  @relation(fields: [orderId], references: [id])
+
+  productId String
+  product   Product @relation(fields: [productId], references: [id])
 }
 
 model Payment {
-  id            Int          @id @default(autoincrement())
-  paymentMethod String       // 'credit_card', 'bank_transfer'
+  id            String        @id @default(cuid()) @map("_id")
+  paymentMethod String // 'credit_card', 'bank_transfer'
   paymentStatus PaymentStatus // Using Enum here for PaymentStatus
   transactionId String
   amount        Float
 
-  paymentDate   DateTime     @default(now())
+  paymentDate DateTime @default(now())
 
-  orderId       Int
-  order         Order        @relation(fields: [orderId], references: [id])
-}
-
-model Image{
-  id             Int          @id  @default(autoincrement())
-  url            String
-  created_at     DateTime @default(now())
-  updated_at     DateTime @updatedAt
-  productId      Int
-  product        Product      @relation(fields: [productId],references: [id])
-
-
+  orderId String
+  order   Order  @relation(fields: [orderId], references: [id])
 }
 
 model Review {
-  id        Int       @id @default(autoincrement())
-  rating    Int       // Rating from 1 to 5
+  id        String   @id @default(cuid()) @map("_id")
+  rating    Int // Rating from 1 to 5
   text      String
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  userId    Int
-  user      User      @relation(fields: [userId], references: [id])
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
 
-  productId Int
-  product   Product   @relation(fields: [productId], references: [id])
-}
-
-model Address {
-  id          Int       @id @default(autoincrement())
-  addressLine1 String
-  addressLine2 String?
-  city        String
-  state       String
-  country     String
-  postalCode  String
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-
-  userId      Int
-  user        User      @relation(fields: [userId], references: [id])
+  productId String
+  product   Product @relation(fields: [productId], references: [id])
 }

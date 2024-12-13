@@ -1,4 +1,4 @@
-import { Address, Order, Product, Profile, Review, User } from "@prisma/client";
+import {  Order, Product, Profile, Review, User } from "@prisma/client";
 import { UpdateUserDto } from "./dto/update-user.dto";
 import { CreateUserDto } from "./dto/create-user.dto";
 
@@ -13,7 +13,6 @@ export interface IUser {
     findUserByPhone(phone: string): Promise<User>;
   
     findUserOrders(userId: string): Promise<Array<Order>>;
-    findUserAddresses(userId: string): Promise<Array<Address>>;
     findUserProducts(userId: string): Promise<Array<Product>>;
     findUserProfiles(userId: string): Promise<Array<Profile>>;
     findUserReviews(userId: string): Promise<Array<Review>>;

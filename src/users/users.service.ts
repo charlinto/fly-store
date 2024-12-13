@@ -3,7 +3,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { IUser } from './Iuser.Interface';
-import { User, Order, Address, Product, Profile, Review } from '@prisma/client';
+import { User, Order, Product, Profile, Review } from '@prisma/client';
 
 @Injectable()
 export class UsersService implements IUser {
@@ -26,9 +26,8 @@ constructor(private readonly prismaService:PrismaService){}
     findUserOrders(userId: string): Promise<Array<Order>> {
         throw new Error('Method not implemented.');
     }
-    findUserAddresses(userId: string): Promise<Array<Address>> {
-        throw new Error('Method not implemented.');
-    }
+
+    
     findUserProducts(userId: string): Promise<Array<Product>> {
         throw new Error('Method not implemented.');
     }
@@ -73,9 +72,7 @@ constructor(private readonly prismaService:PrismaService){}
     }
     FindUserByOrder(data: any): Promise<Order[]> {
         throw new Error('Method not implemented.');
-    }
-    FindUserByAddress(data: any): Promise<Address[]> {
-        throw new Error('Method not implemented.');
+    
     }
     FindUserByProduct(data: any): Promise<Product[]> {
         throw new Error('Method not implemented.');
