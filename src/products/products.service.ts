@@ -6,7 +6,6 @@ import { IProduct} from './iproducts.interface';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { FindDto } from './dto/find-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
-import { disconnect } from 'process';
 
 @Injectable()
 export class ProductsService implements IProduct {
@@ -32,36 +31,6 @@ export class ProductsService implements IProduct {
     }
 
   }
-
-  // async Addphoto(
-  //   data: Partial<{
-  //     id:string;
-  //     data:string;
-  //     createdAt: Date;
-  //     updateAt:Date;
-  //     productId: string
-  //   }>
-  // ):Promise<Product> {
-  //   try{
-  //     let query =await this.prisma.product.update({
-  //       where:{
-  //         id : data['productId'],
-  //       },
-  //       data:{
-  //         photos:{
-  //           create:{
-  //             data:data['data']
-  //           },
-  //         },
-  //       },
-  //     });
-  //     return query;
-
-  //   }catch (error) {
-  //     throw new BadRequestException(error);
-
-  //   }
-  // }
 
   async GetProducts(data: FindDto): Promise<Product[]> {
     try { 

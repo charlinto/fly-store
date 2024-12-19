@@ -14,6 +14,11 @@ async function bootstrap() {
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
+  app.enableCors({
+    origin: '*', // Allow all origins or specify a specific URL (e.g., 'http://localhost:4200' for a frontend app)
+    methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allowed HTTP methods
+    allowedHeaders: ['Content-Type', 'Authorization'], // Allowed headers
+  });
 
   await app.listen(5000);
   const logger: Logger = new Logger('App Logic', {

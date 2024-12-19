@@ -4,7 +4,6 @@ import { CreateProductDto } from './dto/create-product.dto';
 import { IProduct } from './iproducts.interface';
 import { Category } from '@prisma/client';
 import { Product } from './entities/product.entity';
-import { UpdateUserDto } from 'src/users/dto/update-user.dto';
 import { FindDto } from './dto/find-product.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { UpdateProductDto } from './dto/update-product.dto';
@@ -15,17 +14,22 @@ import { UpdateProductDto } from './dto/update-product.dto';
 export class ProductsController implements IProduct {
   constructor(private readonly product: ProductsService) {}
 
-  @Post('')
+  @Post('create')
   CreateProduct(@Body()data: CreateProductDto): Promise<Product> {
     return this.product.CreateProduct(data)
   }
+  @Get('')
   GetProducts(data: FindDto): Promise<Product[]> {
     return this.product.GetProducts(data)
   }
+
+  @Get('')
+
   GetCategory(data: FindDto): Promise<Category[]> {
     return this.product.GetCategory(data)
     
   }
+  
   FindProductById(data: FindDto): Promise<Product> {
     return this.product.FindProductById(data)
 

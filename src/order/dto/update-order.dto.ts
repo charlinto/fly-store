@@ -1,4 +1,14 @@
-import { PartialType } from '@nestjs/mapped-types';
-import { CreateOrderDto } from './create-order.dto';
 
-export class UpdateOrderDto extends PartialType(CreateOrderDto) {}
+import { ApiProperty } from '@nestjs/swagger';
+import { Order } from '@prisma/client';
+import { IsNotEmpty } from 'class-validator';
+
+export class UpdateOrderDto  {
+         @ApiProperty()
+         id: string;
+         @ApiProperty()
+        @IsNotEmpty() 
+        properties: Partial<Order>;
+
+      
+}
